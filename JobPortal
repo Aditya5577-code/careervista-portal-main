@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Vista</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Content Sections */
+        .section {
+            display: none;
+            padding: 6rem 2rem 4rem;
+            min-height: 100vh;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Home Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 2rem auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .search-box button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .about-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .about-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        /* Companies Section */
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .company-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .company-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Jobs Section */
+        .jobs-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .job-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .job-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-company {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .job-salary {
+            background: #e7f3ff;
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .job-details {
+            display: flex;
+            gap: 2rem;
+            color: #666;
+            margin: 1rem 0;
+        }
+
+        .job-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Auth Forms */
+        .auth-container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .auth-container h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .btn-full:hover {
+            transform: translateY(-2px);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .auth-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 0.8rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 0.8rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            background: #f8f9fa;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Career Vista</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showSection('home')">Home</a></li>
+                <li><a href="#" onclick="showSection('about')">About</a></li>
+                <li><a href="#" onclick="showSection('companies')">Companies</a></li>
+                <li><a href="#" onclick="showSection('jobs')">Jobs</a></li>
+            </ul>
+            <div class="auth-buttons" id="authButtons">
+                <button class="btn btn-secondary" onclick="showSection('login')">Login</button>
+                <button class="btn btn-primary" onclick="showSection('signup')">Sign Up</button>
+            </div>
+            <div class="auth-buttons" id="userButtons" style="display: none;">
+                <span id="navUserName" style="margin-right: 1rem;"></span>
+                <button class="btn btn-secondary" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <div class="container">
+            <div class="hero">
+                <h1>Find Your Dream Job Today</h1>
+                <p>Connect with top companies and explore thousands of job opportunities</p>
+                <div class="search-box">
+                    <input type="text" placeholder="Job title, keywords, or company">
+                    <button>Search Jobs</button>
+                </div>
+            </div>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-number">5,000+</div>
+                    <div class="stat-label">Active Jobs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2,500+</div>
+                    <div class="stat-label">Companies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100K+</div>
+                    <div class="stat-label">Job Seekers</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h1>About JobConnect</h1>
+            <p style="font-size: 1.2rem; color: #666; margin: 1rem 0 2rem;">Your trusted partner in career growth and job search</p>
+            <div class="about-content">
+                <div class="about-card">
+                    <h3>Our Mission</h3>
+                    <p>To connect talented professionals with their dream careers and help companies find the perfect candidates for their teams.</p>
+                </div>
+                <div class="about-card">
+                    <h3>What We Do</h3>
+                    <p>We provide a comprehensive platform for job seekers to discover opportunities and for employers to find top talent across all industries.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Why Choose Us</h3>
+                    <p>With advanced matching algorithms, verified companies, and personalized job recommendations, we make job searching efficient and effective.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Companies Section -->
+    <section id="companies" class="section">
+        <div class="container">
+            <h1>Top Companies Hiring</h1>
+            <p style="font-size: 1.2rem; color: #666; margin: 1rem 0 2rem;">Explore opportunities from leading organizations</p>
+            <div class="companies-grid">
+                <div class="company-card">
+                    <div class="company-logo">T</div>
+                    <h3>TechCorp</h3>
+                    <p>Technology</p>
+                    <p style="color: #667eea; font-weight: bold;">45 Open Positions</p>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">D</div>
+                    <h3>DesignHub</h3>
+                    <p>Creative & Design</p>
+                    <p style="color: #667eea; font-weight: bold;">32 Open Positions</p>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">F</div>
+                    <h3>FinanceX</h3>
+                    <p>Finance & Banking</p>
+                    <p style="color: #667eea; font-weight: bold;">28 Open Positions</p>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">H</div>
+                    <h3>HealthPlus</h3>
+                    <p>Healthcare</p>
+                    <p style="color: #667eea; font-weight: bold;">52 Open Positions</p>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">E</div>
+                    <h3>EduLearn</h3>
+                    <p>Education</p>
+                    <p style="color: #667eea; font-weight: bold;">19 Open Positions</p>
+                </div>
+                <div class="company-card">
+                    <div class="company-logo">M</div>
+                    <h3>MarketPro</h3>
+                    <p>Marketing</p>
+                    <p style="color: #667eea; font-weight: bold;">36 Open Positions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jobs Section -->
+    <section id="jobs" class="section">
+        <div class="container">
+            <h1>Latest Job Openings</h1>
+            <p style="font-size: 1.2rem; color: #666; margin: 1rem 0 2rem;">Discover your next career opportunity</p>
+            <div class="jobs-grid">
+                <div class="job-card">
+                    <div class="job-header">
+                        <div>
+                            <h3 class="job-title">Senior Software Engineer</h3>
+                            <p class="job-company">TechCorp</p>
+                        </div>
+                        <div class="job-salary">$120K - $150K</div>
+                    </div>
+                    <div class="job-details">
+                        <span>📍 San Francisco, CA</span>
+                        <span>💼 Full-time</span>
+                        <span>📅 Posted 2 days ago</span>
+                    </div>
+                    <p style="color: #666; margin-bottom: 1rem;">Looking for an experienced software engineer to join our innovative team and work on cutting-edge projects.</p>
+                    <div class="job-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">AWS</span>
+                        <span class="tag">TypeScript</span>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-header">
+                        <div>
+                            <h3 class="job-title">UX/UI Designer</h3>
+                            <p class="job-company">DesignHub</p>
+                        </div>
+                        <div class="job-salary">$90K - $110K</div>
+                    </div>
+                    <div class="job-details">
+                        <span>📍 Remote</span>
+                        <span>💼 Full-time</span>
+                        <span>📅 Posted 1 week ago</span>
+                    </div>
+                    <p style="color: #666; margin-bottom: 1rem;">Create beautiful and intuitive user experiences for our digital products and mobile applications.</p>
+                    <div class="job-tags">
+                        <span class="tag">Figma</span>
+                        <span class="tag">Adobe XD</span>
+                        <span class="tag">Prototyping</span>
+                        <span class="tag">User Research</span>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-header">
+                        <div>
+                            <h3 class="job-title">Financial Analyst</h3>
+                            <p class="job-company">FinanceX</p>
+                        </div>
+                        <div class="job-salary">$80K - $100K</div>
+                    </div>
+                    <div class="job-details">
+                        <span>📍 New York, NY</span>
+                        <span>💼 Full-time</span>
+                        <span>📅 Posted 3 days ago</span>
+                    </div>
+                    <p style="color: #666; margin-bottom: 1rem;">Analyze financial data and provide strategic recommendations to drive business growth and profitability.</p>
+                    <div class="job-tags">
+                        <span class="tag">Excel</span>
+                        <span class="tag">SQL</span>
+                        <span class="tag">Financial Modeling</span>
+                        <span class="tag">Tableau</span>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-header">
+                        <div>
+                            <h3 class="job-title">Marketing Manager</h3>
+                            <p class="job-company">MarketPro</p>
+                        </div>
+                        <div class="job-salary">$95K - $120K</div>
+                    </div>
+                    <div class="job-details">
+                        <span>📍 Austin, TX</span>
+                        <span>💼 Full-time</span>
+                        <span>📅 Posted 5 days ago</span>
+                    </div>
+                    <p style="color: #666; margin-bottom: 1rem;">Lead marketing campaigns and strategies to increase brand awareness and drive customer engagement.</p>
+                    <div class="job-tags">
+                        <span class="tag">Digital Marketing</span>
+                        <span class="tag">SEO</span>
+                        <span class="tag">Analytics</span>
+                        <span class="tag">Content Strategy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section id="login" class="section">
+        <div class="container">
+            <div class="auth-container">
+                <h2>Login to Your Account</h2>
+                <div id="loginError" class="error-message"></div>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn-full">Login</button>
+                </form>
+                <div class="auth-footer">
+                    Don't have an account? <a href="#" onclick="showSection('signup')">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sign Up Section -->
+    <section id="signup" class="section">
+        <div class="container">
+            <div class="auth-container">
+                <h2>Create Your Account</h2>
+                <div id="signupSuccess" class="success-message"></div>
+                <div id="signupError" class="error-message"></div>
+                <form onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn-full">Sign Up</button>
+                </form>
+                <div class="auth-footer">
+                    Already have an account? <a href="#" onclick="showSection('login')">Login</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="section dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="dashboardAvatar"></div>
+                    <div>
+                        <h1 id="dashboardGreeting"></h1>
+                        <p id="dashboardEmail"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 style="margin-bottom: 1.5rem;">Your Activity</h2>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Applications Sent</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Interviews Scheduled</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">28</div>
+                    <div class="stat-label">Saved Jobs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Profile Complete</div>
+                </div>
+            </div>
+
+            <h2 style="margin: 2rem 0 1.5rem;">Recommended Jobs</h2>
+            <div class="jobs-grid">
+                <div class="job-card">
+                    <div class="job-header">
+                        <div>
+                            <h3 class="job-title">Full Stack Developer</h3>
+                            <p class="job-company">TechCorp</p>
+                        </div>
+                        <div class="job-salary">$110K - $140K</div>
+                    </div>
+                    <div class="job-details">
+                        <span>📍 Remote</span>
+                        <span>💼 Full-time</span>
+                        <span>📅 Posted today</span>
+                    </div>
+                    <p style="color: #666; margin-bottom: 1rem;">Join our team to build scalable web applications using modern technologies.</p>
+                    <div class="job-tags">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">Docker</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let users = {};
+        let currentUser = null;
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            const errorDiv = document.getElementById('signupError');
+            const successDiv = document.getElementById('signupSuccess');
+            
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'Passwords do not match!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            if (users[email]) {
+                errorDiv.textContent = 'Email already registered!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            users[email] = { name, email, password };
+            
+            successDiv.textContent = 'Account created successfully! Redirecting to login...';
+            successDiv.style.display = 'block';
+            
+            e.target.reset();
+            
+            setTimeout(() => {
+                showSection('login');
+            }, 2000);
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            errorDiv.style.display = 'none';
+            
+            const user = users[email];
+            
+            if (!user) {
+                errorDiv.textContent = 'Email not found! Please sign up first.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            if (user.password !== password) {
+                errorDiv.textContent = 'Incorrect password!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            currentUser = user;
+            updateUIForLoggedInUser();
+            showDashboard();
+        }
+
+        function updateUIForLoggedInUser() {
+            document.getElementById('authButtons').style.display = 'none';
+            document.getElementById('userButtons').style.display = 'flex';
+            document.getElementById('navUserName').textContent = currentUser.name;
+        }
+
+        function showDashboard() {
+            const firstName = currentUser.name.split(' ')[0];
+            const initial = currentUser.name.charAt(0).toUpperCase();
+            
+            document.getElementById('dashboardGreeting').textContent = `Welcome back, ${firstName}!`;
+            document.getElementById('dashboardEmail').textContent = currentUser.email;
+            document.getElementById('dashboardAvatar').textContent = initial;
+            
+            showSection('dashboard');
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('authButtons').style.display = 'flex';
+            document.getElementById('userButtons').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            showSection('home');
+        }
+    </script>
+</body>
+</html>
